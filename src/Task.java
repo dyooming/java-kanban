@@ -1,16 +1,10 @@
 import java.util.Objects;
 
 public class Task {
-    private Integer id; // номер задачи
-    private String taskName; // имя задачи
-    private String taskDescription; // описание задачи
-    private TaskStatus taskStatus; // статус задачи
-
-    public Task(String taskName, String taskDescription, TaskStatus taskStatus) { // создаем конструктор
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        this.taskStatus = taskStatus;
-    }
+        protected Integer id;
+        protected String taskName;
+        protected String taskDescription;
+        protected TaskStatus taskStatus;
 
     public Task(Integer id, String taskName, String taskDescription, TaskStatus taskStatus) {
         this.id = id;
@@ -19,6 +13,11 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
+    public Task(String taskName, String taskDescription, TaskStatus taskStatus) {
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStatus = taskStatus;
+    }
 
     public Integer getId() {
         return id;
@@ -74,3 +73,4 @@ public class Task {
                 '}';
     }
 }
+

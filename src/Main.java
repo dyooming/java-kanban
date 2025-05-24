@@ -6,78 +6,75 @@ public class Main {
         System.out.println("Поехали!");
         TaskManager taskManager = new TaskManager();
 
-        System.out.println("-----1. Создать задачу-----");
-        Task task1 = new Task("Погулять", "Выйти на прогулку с собакой", TaskStatus.NEW);
+        System.out.println("-----Создать задачу-----");
+
+        // Создаем две таски
+        Task task1 = new Task("Сделать тренировочный план на неделю", "Дедлайн - пятница", TaskStatus.NEW);
         taskManager.createTask(task1);
-
-        Task task2 = new Task("Активный досуг", "Покататься на велосипеде", TaskStatus.IN_PROGRESS);
+        System.out.println(task1);
+        Task task2 = new Task("Снять инструкцию по технике выполнения упражнений", "С двух камер", TaskStatus.IN_PROGRESS);
         taskManager.createTask(task2);
+        System.out.println(task2);
 
-        //Создаем эпики
+        // Создаем эпик с 2 подзадачами
+        Epic epic1 = new Epic("День ног", "Свободные веса");
+        taskManager.createEpic(epic1);
+        Sub sub1 = new Sub("Присед", "4 подхода по 10 повторений", TaskStatus.NEW, epic1.getId());
+        taskManager.createSub(sub1);
+        epic1.addSubToSubTasks(sub1.getId());
+        Sub sub2 = new Sub("Выпады", "3 подхода по 12 повторений", TaskStatus.NEW, epic1.getId());
+        taskManager.createSub(sub2);
+        epic1.addSubToSubTasks(sub2.getId());
 
-        Epic epic = new Epic("Чистый четверг", "Убраться дома");
-        taskManager.createTask(epic);
-
-        Sub sub = new Sub("В комнате", "Протереть пыль", TaskStatus.NEW, epic.getId());
-        taskManager.createSub(epic, sub);
-
-        Sub sub1 = new Sub("На кухне", "Помыть плиту", TaskStatus.NEW, epic.getId());
-        taskManager.createSub(epic, sub1);
-
-        Epic epic2 = new Epic("Сходить в зал", "Тренировка 1");
-        taskManager.createTask(epic2);
-
-        Sub sub2 = new Sub("Присед", "6 подходов по 10 повторений", TaskStatus.DONE, epic2.getId());
-        taskManager.createSub(epic2, sub2);
+        System.out.println(epic1);
+        System.out.println(sub1);
+        System.out.println(sub2);
 
 
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println(taskManager.getTaskById(3));
-        System.out.println(taskManager.getTaskById(4));
-        System.out.println(taskManager.getTaskById(5));
-        System.out.println(taskManager.getTaskById(6));
-        System.out.println(taskManager.getTaskById(7));
+        // Создаем эпик с 1 подзадачей
+        Epic epic2 = new Epic("Заминка", "Легкий темп");
+        taskManager.createEpic(epic2);
+        Sub sub3 = new Sub("Растяжка", "ТБС, задняя поверхность бедра", TaskStatus.NEW, epic2.getId());
+        taskManager.createSub(sub3);
+        epic2.addSubToSubTasks(sub3.getId());
 
-        System.out.println("\n-----2. Обновить статус задач-----");
-        Task task1Updt = new Task(task1.getId(),task1.getTaskName(), task1.getTaskDescription(), TaskStatus.IN_PROGRESS);
-        taskManager.updateTask(task1Updt);
-        Task task2Updt = new Task(task2.getId(),task1.getTaskName(), task2.getTaskDescription(), TaskStatus.DONE);
-        taskManager.updateTask(task2Updt);
+        System.out.println(epic2);
+        System.out.println(sub3);
 
+        System.out.println("\n-----Выводим все задачи по категориям-----");
+        System.out.println(taskManager.getAllTasks(taskManager.getTasks()));
+        System.out.println(taskManager.getAllEpics(taskManager.getEpics()));
+        System.out.println(taskManager.getAllSubs(taskManager.getSubs()));
 
-        Sub subUpdt = new Sub(sub.getId(),sub.getTaskName(), sub.getTaskDescription(), TaskStatus.IN_PROGRESS, sub.getEpicId());
-        taskManager.updateSub(epic, subUpdt, sub);
+        System.out.println("\n-----Обновить статус задач-----");
+        Task updtTask1 = new Task(task1.getId(), "Переделать тренировочный план", "Добавить упражнения на спину", TaskStatus.IN_PROGRESS);
+        taskManager.updateTask(updtTask1);
+        System.out.println(updtTask1);
+        Task updtTask2 = new Task(task2.getId(), "Налоги", "Разобраться с налоговой отчетностью", TaskStatus.DONE);
+        taskManager.updateTask(updtTask2);
+        System.out.println(updtTask2);
 
-        Sub subUpdt1 = new Sub(sub1.getId(), sub1.getTaskName(), sub1.getTaskDescription(), TaskStatus.IN_PROGRESS, sub1.getEpicId());
-        taskManager.updateSub(epic, subUpdt1, sub1);
+        Sub updtSub1 = new Sub(sub1.getId(), "Разгибание голени", "5 подходов по 15 повторений", TaskStatus.DONE, sub1.getEpicId());
+        taskManager.updateSub(updtSub1);
+        Sub updtSub2 = new Sub(sub2.getId(), "Платформа", "4 подхода по 12 повторений", TaskStatus.DONE, sub2.getEpicId());
+        taskManager.updateSub(updtSub2);
+        Sub updtSub3 = new Sub(sub3.getId(), "Кардио тренировка", "Эллипс - 60 минут", TaskStatus.IN_PROGRESS, sub3.getEpicId());
+        taskManager.updateSub(updtSub3);
 
-        Sub subUpdt2 = new Sub(sub2.getId(), sub2.getTaskName(), sub2.getTaskDescription(), TaskStatus.DONE, sub2.getEpicId());
-        taskManager.updateSub(epic2, subUpdt2, sub2);
+        System.out.println(epic1);
+        System.out.println(updtSub1);
+        System.out.println(updtSub2);
+        System.out.println(epic2);
+        System.out.println(updtSub3);
 
-        taskManager.updateEpicStatus(epic);
-        taskManager.updateEpicStatus(epic2);
+        System.out.println("\n-----Удалить две задачи и вывести все задачи-----");
+        taskManager.deleteTask(2);
+        taskManager.deleteEpic(6);
 
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println(taskManager.getTaskById(3));
-        System.out.println(taskManager.getTaskById(4));
-        System.out.println(taskManager.getTaskById(5));
-        System.out.println(taskManager.getTaskById(6));
-        System.out.println(taskManager.getTaskById(7));
+        System.out.println(taskManager.getSubByEpicId(3));
 
-
-        System.out.println("\n-----3. Удалить две задачи и вывести все задачи-----");
-        taskManager.deleteById(2);
-        taskManager.deleteById(6);
-        System.out.println(taskManager.getTaskById(1));
-        System.out.println(taskManager.getTaskById(2));
-        System.out.println(taskManager.getTaskById(3));
-        System.out.println(taskManager.getTaskById(4));
-        System.out.println(taskManager.getTaskById(5));
-        System.out.println(taskManager.getTaskById(6));
-        System.out.println(taskManager.getTaskById(7));
-
-        System.out.println(taskManager.getSubByEpicId(3, 5));
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getEpics());
+        System.out.println(taskManager.getSubs());
     }
 }
