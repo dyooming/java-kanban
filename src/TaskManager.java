@@ -12,6 +12,18 @@ public class TaskManager {
         return generatorId++;
     }
 
+    public Task getTaskById(Integer taskId) {
+        return tasks.get(taskId);
+    }
+
+    public Sub getSubById(Integer subId) {
+        return subs.get(subId);
+    }
+
+    public Epic getEpicById(Integer epicId) {
+        return epics.get(epicId);
+    }
+
     public Task createTask(Task task) {
         task.setId(getNextId());
         tasks.put(task.getId(), task);
@@ -25,8 +37,14 @@ public class TaskManager {
     }
 
     public Sub createSub(Sub sub) {
+        Epic epic = epics.get(sub.getEpicId());
+        if (epic == null) {
+            return null;
+        }
         sub.setId(getNextId());
         subs.put(sub.getId(), sub);
+        epic.addSubToSubTasks(sub.getId());
+        updateEpicStatus(epic);
         return sub;
     }
 
@@ -85,87 +103,84 @@ public class TaskManager {
         return epic;
     }
 
-    public Task updateTask(Task newTask) {
-        tasks.put(newTask.getId(), newTask);
-        return newTask;
+    public Task updateTask(Task task) {
+        tasks.put(task.getId(), task);
+        return task;
+    }
+
+    public Epic updateEpic(Epic newEpic) {
+        epics.put(newEpic.getId(), newEpic);
+        return newEpic;
     }
 
     public Sub updateSub(Sub newSub) {
-        if (newSub.getId() == null) {
+        Sub oldSub = subs.get(newSub.getId());
+        if (oldSub == null || newSub == null) {
             return null;
         }
-
-        Sub oldSub = subs.get(newSub.getId());
         if (!oldSub.getEpicId().equals(newSub.getEpicId())) {
             return null;
         }
-
-        subs.remove(oldSub.getId());
         subs.put(newSub.getId(), newSub);
 
         Epic epic = epics.get(newSub.getEpicId());
-        ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
-
-        subsFromEpic.remove(oldSub.getId()); //можно через deleteSubFromEpic
-        epic.addSubToSubTasks(newSub.getId());
         updateEpicStatus(epic);
-        epics.put(epic.getId(), epic);
         return newSub;
     }
 
-    public void deleteSub(Integer subId){
+    public void deleteSub(Integer subId) {
         Sub sub = subs.get(subId);
-        Epic epic = epics.get(sub.getEpicId());
-        ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
-        subsFromEpic.remove(subId);
-        subs.remove(subId);
-    }
-    public void deleteEpic(Integer epicId){
-        Epic epic = epics.get(epicId);
-        ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
-        for (Integer subsFrEp : subsFromEpic){
-            subs.remove(subsFrEp);
+        if (sub != null) {
+            Epic epic = epics.get(sub.getEpicId());
+            ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
+            epic.deleteSubFromEpic(subId);
+            updateEpicStatus(epic);
+            subs.remove(subId);
         }
-        epics.remove(epicId);
     }
 
-    public ArrayList<Sub> getSubByEpicId(Integer epicId){
+    public void deleteEpic(Integer epicId) {
+        Epic epic = epics.get(epicId);
+        if (epic != null) {
+            ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
+            for (Integer subsFrEp : subsFromEpic) {
+                subs.remove(subsFrEp);
+            }
+            epics.remove(epicId);
+        }
+    }
+
+    public ArrayList<Sub> getSubByEpicId(Integer epicId) {
         Epic epic = epics.get(epicId);
         ArrayList<Sub> subsFromEpic = new ArrayList<>();
-        for (Sub sub : subs.values()){
-            if(sub.getEpicId().equals(epic.getId())){
-                subsFromEpic.add(sub);
+        if (epic != null) {
+            for (Sub sub : subs.values()) {
+                if (sub.getEpicId().equals(epic.getId())) {
+                    subsFromEpic.add(sub);
+                }
             }
         }
         return subsFromEpic;
     }
 
-    public void deleteTask(Integer taskId){
+    public void deleteTask(Integer taskId) {
         tasks.remove(taskId);
     }
 
-    public HashMap<Integer, Task> getTasks() {
-        return tasks;
+    public void removeAllTasks() {
+        tasks.clear();
     }
 
-    public void setTasks(HashMap<Integer, Task> tasks) {
-        this.tasks = tasks;
+    public void removeAllSubs() {
+        for (Sub sub : new ArrayList<>(subs.values())) {
+            deleteSub(sub.getId());
+        }
     }
 
-    public HashMap<Integer, Sub> getSubs() {
-        return subs;
-    }
-
-    public void setSubs(HashMap<Integer, Sub> subs) {
-        this.subs = subs;
-    }
-
-    public HashMap<Integer, Epic> getEpics() {
-        return epics;
-    }
-
-    public void setEpics(HashMap<Integer, Epic> epics) {
-        this.epics = epics;
+    public void removeAllEpics() {
+        for (Epic epic : new ArrayList<>(epics.values())) {
+            deleteEpic(epic.getId());
+        }
     }
 }
 
