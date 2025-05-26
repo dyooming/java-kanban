@@ -64,14 +64,12 @@ public class Main {
         taskManager.deleteEpic(6);
 
 
-       System.out.println(taskManager.getTaskById(1));
-       System.out.println(taskManager.getTaskById(2));
-       System.out.println(taskManager.getEpicById(3));
-       System.out.println(taskManager.getSubById(4));
-       System.out.println(taskManager.getSubById(5));
-       System.out.println(taskManager.getEpicById(6));
-       System.out.println(taskManager.getSubById(7));
-
-
+        System.out.println(taskManager.getTaskById(1));
+        System.out.println(taskManager.getTaskById(2));
+        System.out.println(taskManager.getEpicById(3));
+        System.out.println(taskManager.getSubById(4));
+        System.out.println(taskManager.getSubById(5));
+        System.out.println(taskManager.getEpicById(6));
+        System.out.println(taskManager.getSubById(7));
     }
 }

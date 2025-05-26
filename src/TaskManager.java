@@ -104,13 +104,21 @@ public class TaskManager {
     }
 
     public Task updateTask(Task task) {
-        tasks.put(task.getId(), task);
-        return task;
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
+            return task;
+        }
+        return null;
     }
 
-    public Epic updateEpic(Epic newEpic) {
-        epics.put(newEpic.getId(), newEpic);
-        return newEpic;
+    public Epic updateEpic(Epic epic) {
+        if (epics.containsKey(epic.getId())) {
+            Epic oldEpic = epics.get(epic.getId());
+            oldEpic.setTaskName(epic.taskName);
+            oldEpic.setTaskDescription(epic.taskDescription);
+            return epic;
+        }
+        return null;
     }
 
     public Sub updateSub(Sub newSub) {
@@ -132,7 +140,6 @@ public class TaskManager {
         Sub sub = subs.get(subId);
         if (sub != null) {
             Epic epic = epics.get(sub.getEpicId());
-            ArrayList<Integer> subsFromEpic = epic.getSubTasksId();
             epic.deleteSubFromEpic(subId);
             updateEpicStatus(epic);
             subs.remove(subId);
