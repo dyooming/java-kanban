@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Task {
@@ -5,6 +7,8 @@ public class Task {
         protected String taskName;
         protected String taskDescription;
         protected TaskStatus taskStatus;
+
+        private ArrayList<Integer> subTasksId;
 
     public Task(Integer id, String taskName, String taskDescription, TaskStatus taskStatus) {
         this.id = id;
@@ -14,9 +18,11 @@ public class Task {
     }
 
     public Task(String taskName, String taskDescription, TaskStatus taskStatus) {
+        // вызов метода утилитарного класса по созданию id
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStatus = taskStatus;
+
     }
 
     public Integer getId() {
@@ -71,6 +77,10 @@ public class Task {
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskStatus=" + taskStatus +
                 '}';
+    }
+
+    public void addSubToSubTasks(Integer subId){
+        subTasksId.add(subId);
     }
 }
 

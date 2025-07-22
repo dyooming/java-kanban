@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTasksId;
@@ -7,12 +8,13 @@ public class Epic extends Task {
     public Epic(String taskName, String taskDescription) {
         super(taskName, taskDescription, TaskStatus.NEW);
         this.subTasksId = new ArrayList<>();
+
     }
     public Epic(Integer id, String taskName, String taskDescription) {
         super(id,taskName, taskDescription, TaskStatus.NEW);
         this.subTasksId = new ArrayList<>();
     }
-
+//
     public ArrayList<Integer> getSubTasksId() {
         return subTasksId;
     }
