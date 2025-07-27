@@ -1,8 +1,9 @@
+package Task;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subTasksId;
+    ArrayList<Integer> subTasksId;
 
 
     public Epic(String taskName, String taskDescription) {
@@ -14,7 +15,7 @@ public class Epic extends Task {
         super(id,taskName, taskDescription, TaskStatus.NEW);
         this.subTasksId = new ArrayList<>();
     }
-//
+    //
     public ArrayList<Integer> getSubTasksId() {
         return subTasksId;
     }
@@ -37,7 +38,7 @@ public class Epic extends Task {
         for (Integer subTaskId : subTasksId) {
             subTaskIds.add(subTaskId);
         }
-        return "Epic{" +
+        return "Task.Epic{" +
                 "id=" + getId() +
                 ", taskName='" + getTaskName() + '\'' +
                 ", taskDescription='" + getTaskDescription() + '\'' +

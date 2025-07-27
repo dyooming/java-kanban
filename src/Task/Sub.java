@@ -1,8 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+package Task;
 
 public class Sub extends Task {
-    private final Integer epicId;
+    Integer epicId;
 
     public Sub(Integer id, String taskName, String taskDescription, TaskStatus taskStatus, Integer epicId) {
         super(id, taskName, taskDescription, taskStatus);
@@ -22,7 +21,7 @@ public class Sub extends Task {
 
     public String toString() {
 
-        return "Sub{" +
+        return "Task.Sub{" +
                 "id=" + getId() +
                 ", taskName='" + getTaskName() + '\'' +
                 ", taskDescription='" + getTaskDescription() + '\'' +
@@ -31,3 +30,4 @@ public class Sub extends Task {
                 '}';
     }
 }
+

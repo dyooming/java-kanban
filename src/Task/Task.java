@@ -1,14 +1,15 @@
+package Task;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Task {
-        protected Integer id;
-        protected String taskName;
-        protected String taskDescription;
-        protected TaskStatus taskStatus;
+    Integer id;
+    String taskName;
+    String taskDescription;
+    TaskStatus taskStatus;
 
-        private ArrayList<Integer> subTasksId;
+    private ArrayList<Integer> subTasksId;
 
     public Task(Integer id, String taskName, String taskDescription, TaskStatus taskStatus) {
         this.id = id;
@@ -71,7 +72,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Task.Task{" +
                 "id=" + id +
                 ", taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
@@ -83,4 +84,5 @@ public class Task {
         subTasksId.add(subId);
     }
 }
+
 
